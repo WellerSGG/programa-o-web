@@ -1,0 +1,87 @@
+/*
+* Curso de Engenharia de Software - UniEVANGÉLICA 
+* Disciplina de Programação Web 
+* Dev: Weller Schwartz
+* DATA: 10/05
+*/ 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List em Vue.js</title>
+  <!-- Adicionando Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <style>
+    /* Estilos simples para melhorar a aparência */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .task-list {
+      margin-top: 20px;
+    }
+    .task-item {
+      margin-bottom: 10px;
+    }
+    .task-item.completed {
+      text-decoration: line-through;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <div>
+    <!-- Input para adicionar novas tarefas -->
+    <input type="text" v-model="newTask" @keyup.enter="addTask">
+    <!-- Botão para adicionar a tarefa à lista -->
+    <button @click="addTask">Adicionar</button>
+  </div>
+  <!-- Lista de tarefas -->
+  <ul class="task-list">
+    <!-- Utilizando v-for para iterar sobre as tarefas -->
+    <li v-for="(task, index) in tasks" :key="index" :class="{ 'completed': task.completed }">
+      <!-- Nome da tarefa -->
+      <span>{{ task.name }}</span>
+      <!-- Botão para marcar como concluída -->
+      <button @click="toggleTask(index)">{{ task.completed ? 'Desfazer' : 'Concluir' }}</button>
+      <!-- Botão para remover a tarefa -->
+      <button @click="removeTask(index)">Remover</button>
+    </li>
+  </ul>
+</div>
+
+<script>
+  // Instância Vue
+  new Vue({
+    el: '#app',
+    data: {
+      // Array para armazenar as tarefas
+      tasks: [],
+      // Variável para armazenar a nova tarefa
+      newTask: ''
+    },
+    methods: {
+      // Método para adicionar nova tarefa
+      addTask() {
+        if (this.newTask.trim() !== '') {
+          this.tasks.push({ name: this.newTask, completed: false });
+          this.newTask = ''; // Limpa o input após adicionar a tarefa
+        }
+      },
+      // Método para marcar tarefa como concluída ou desfazer
+      toggleTask(index) {
+        this.tasks[index].completed = !this.tasks[index].completed;
+      },
+      // Método para remover tarefa da lista
+      removeTask(index) {
+        this.tasks.splice(index, 1);
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
