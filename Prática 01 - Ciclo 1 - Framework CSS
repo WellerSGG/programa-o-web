@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário com Bootstrap</title>
+  <!-- Adicionando o CSS do Bootstrap -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Estilo personalizado */
+    /* Adicionando um espaçamento interno ao formulário */
+    .custom-form {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <!-- Adicionando classe 'custom-form' para aplicar o estilo personalizado -->
+      <form class="custom-form">
+        <!-- Campo de nome -->
+        <div class="form-group">
+          <label for="nome">Nome:</label>
+          <input type="text" class="form-control" id="nome" placeholder="Digite seu nome">
+        </div>
+        <!-- Campo de e-mail -->
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Digite seu email">
+        </div>
+        <!-- Campo de senha -->
+        <div class="form-group">
+          <label for="senha">Senha:</label>
+          <input type="password" class="form-control" id="senha" placeholder="Digite sua senha">
+        </div>
+        <!-- Botão de submit -->
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
