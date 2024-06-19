@@ -1,0 +1,20 @@
+<?php
+
+interface EmailServiceInterface {
+    public function sendEmail(User $user, $subject, $message);
+}
+
+class EmailService implements EmailServiceInterface {
+    public function sendEmail(User $user, $subject, $message) {
+    }
+
+    public function sendWelcomeEmail(User $user) {
+        $this->sendEmail($user, "Welcome", "Thank you for registering!");
+    }
+}
+
+class AdditionalEmailService extends EmailService {
+    public function sendWelcomeEmailWithDiscount(User $user) {
+        $this->sendEmail($user, "Welcome", "Thank you for registering! Here is a discount code.");
+    }
+}

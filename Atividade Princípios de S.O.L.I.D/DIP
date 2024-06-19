@@ -1,0 +1,36 @@
+<?php
+
+class UserService {
+    private $userRepository;
+    private $emailService;
+    private $userExporter;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        EmailServiceInterface $emailService,
+        UserExporterInterface $userExporter
+    ) {
+        $this->userRepository = $userRepository;
+        $this->emailService = $emailService;
+        $this->userExporter = $userExporter;
+    }
+
+    public function registerUser(User $user) {
+        $this->userRepository->save($user);
+        $this->emailService->sendWelcomeEmail($user);
+    }
+
+    public function exportUsers() {
+        $users = $this->userRepository->getAllUsers();
+        $this->userExporter->exportToCSV($users);
+    }
+}
+
+$user = new User(1, 'John Doe', 'john@example.com', 'secret');
+$userRepo = new UserRepository();
+$emailService = new EmailService();
+$userExporter = new UserExporter();
+
+$userService = new UserService($userRepo, $emailService, $userExporter);
+$userService->registerUser($user);
+$userService->exportUsers();

@@ -1,0 +1,102 @@
+<?php
+
+interface UserRepositoryInterface {
+    public function save(User $user);
+    public function getAllUsers();
+}
+
+interface EmailServiceInterface {
+    public function sendEmail(User $user, $subject, $message);
+    public function sendWelcomeEmail(User $user);
+}
+
+interface UserExporterInterface {
+    public function exportToCSV(array $users);
+}
+
+class User {
+    public $id;
+    public $name;
+    public $email;
+    public $password;
+
+    public function __construct($id, $name, $email, $password) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+    }
+}
+
+class UserRepository implements UserRepositoryInterface {
+    public function save(User $user) {
+        echo "User {$user->name} saved to database.\n";
+    }
+
+    public function getAllUsers() {
+        
+        return [
+            new User(1, 'John Doe', 'john@example.com', 'secret'),
+            new User(2, 'Jane Doe', 'jane@example.com', 'password')
+        ];
+    }
+}
+
+class EmailService implements EmailServiceInterface {
+    public function sendEmail(User $user, $subject, $message) {
+        echo "Email sent to {$user->email}: {$subject} - {$message}\n";
+    }
+
+    public function sendWelcomeEmail(User $user) {
+        $this->sendEmail($user, "Welcome", "Thank you for registering!");
+    }
+}
+
+class UserExporter implements UserExporterInterface {
+    public function exportToCSV(array $users) {
+        $csv = "id, name, email\n";
+
+        foreach ($users as $user) {
+            $csv .= "{$user->id}, {$user->name}, {$user->email}\n";
+        }
+
+        file_put_contents('users.csv', $csv);
+        echo "Users exported to CSV.\n";
+    }
+}
+
+class UserService {
+    private $userRepository;
+    private $emailService;
+    private $userExporter;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        EmailServiceInterface $emailService,
+        UserExporterInterface $userExporter
+    ) {
+        $this->userRepository = $userRepository;
+        $this->emailService = $emailService;
+        $this->userExporter = $userExporter;
+    }
+
+    public function registerUser(User $user) {
+        $this->userRepository->save($user);
+        $this->emailService->sendWelcomeEmail($user);
+    }
+
+    public function exportUsers() {
+        $users = $this->userRepository->getAllUsers();
+        $this->userExporter->exportToCSV($users);
+    }
+}
+
+$user = new User(1, 'John Doe', 'john@example.com', 'secret');
+$userRepo = new UserRepository();
+$emailService = new EmailService();
+$userExporter = new UserExporter();
+
+$userService = new UserService($userRepo, $emailService, $userExporter);
+$userService->registerUser($user);
+$userService->exportUsers();
+?>
