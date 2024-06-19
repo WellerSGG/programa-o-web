@@ -1,0 +1,51 @@
+<?php
+
+class User {
+    public $id;
+    public $name;
+    public $email;
+    public $password;
+
+    public function __construct($id, $name, $email, $password) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+    }
+}
+
+class UserRepository {
+    public function save(User $user) {
+    }
+
+    public function getAllUsers() {
+    }
+}
+
+class EmailService {
+    public function sendWelcomeEmail(User $user) {
+    }
+}
+
+class UserExporter {
+    public function exportToCSV(array $users) {
+        $csv = "id, name, email\n";
+
+        foreach ($users as $user) {
+            $csv .= "{$user->id}, {$user->name}, {$user->email}\n";
+        }
+
+        file_put_contents('users.csv', $csv);
+    }
+}
+
+$user = new User(1, 'John Doe', 'john@example.com', 'secret');
+$userRepo = new UserRepository();
+$userRepo->save($user);
+
+$emailService = new EmailService();
+$emailService->sendWelcomeEmail($user);
+
+$users = $userRepo->getAllUsers();
+$userExporter = new UserExporter();
+$userExporter->exportToCSV($users);
